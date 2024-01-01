@@ -13,6 +13,14 @@ const App: React.FC = () => {
       title,
       completed: false,
     };
+    const response = fetch('http://localhost:3001/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id: newTask.id, title: newTask.title, completed: newTask.completed })
+    });
+    console.log("result " + response);
     setTasks([...tasks, newTask]);
   };
 

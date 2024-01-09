@@ -25,9 +25,8 @@ const App: React.FC = () => {
     const taskToToggle = tasks.find(task => task.id === id);
     if (taskToToggle) {
       const updatedTask = { ...taskToToggle, completed: !taskToToggle.completed };
-      UpdateTask(id, updatedTask.completed).then(() => {
-        setTasks(tasks.map(task => task.id === id ? updatedTask : task));
-      });
+      UpdateTask(id, updatedTask.completed)
+      setTasks(tasks.map(task => task.id === id ? updatedTask : task));
     }
   };
 

@@ -1,24 +1,14 @@
 // TaskList.tsx
-import React, { useEffect, useState } from 'react';
-import Task from './Task.ts';
-
+import React from 'react';
+import Task from './Task';
 
 interface TaskListProps {
+    tasks: Task[];
     onDelete: (id: number) => void;
     onToggle: (id: number) => void;
 }
 
-const TaskList: React.FC<TaskListProps> = ({ onDelete, onToggle }) => {
-    const [tasks, setTasks] = useState<Task[]>([]); // Declare tasks state
-
-
-    useEffect(() => {
-        fetch('http://localhost:3001/Alltasks')
-            .then(response => response.json())
-            .then(response => {
-                setTasks(response);
-            });
-    }, []);
+const TaskList: React.FC<TaskListProps> = ({ tasks, onDelete, onToggle }) => {
     return (
         <ul>
             {tasks.map(task => (

@@ -1,11 +1,35 @@
 // App.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TaskList from './TaskList.tsx';
 import TaskForm from './TaskForm.tsx';
 import Task from './Task.ts';
+import { fetchTasks, DeleteTask, UpdateTask } from './api.ts'; // Import fetchTasks
 
 const App: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    fetchTasks().then(fetchedTasks => {
+      setTasks(fetchedTasks);
+    });
+  }, []);
+
+  const DeleteTaskApi = (id: number) => {
+    console.log("delete task " + id);
+    DeleteTask(id).then(() => {
+      setTasks(tasks.filter(task => task.id !== id));
+    });
+  };
+
+  const ToggleTaskApi = (id: number) => {
+    const taskToToggle = tasks.find(task => task.id === id);
+    if (taskToToggle) {
+      const updatedTask = { ...taskToToggle, completed: !taskToToggle.completed };
+      UpdateTask(id, updatedTask.completed).then(() => {
+        setTasks(tasks.map(task => task.id === id ? updatedTask : task));
+      });
+    }
+  };
 
   const addTask = (title: string) => {
     const newTask: Task = {
@@ -24,19 +48,11 @@ const App: React.FC = () => {
     setTasks([...tasks, newTask]);
   };
 
-  const deleteTask = (id: number) => {
-    setTasks(tasks.filter(task => task.id !== id));
-  };
-
-  const toggleTask = (id: number) => {
-    setTasks(tasks.map(task => (task.id === id ? { ...task, completed: !task.completed } : task)));
-  };
-
   return (
     <div>
       <h1>Task Manager</h1>
       <TaskForm onAdd={addTask} />
-      <TaskList tasks={tasks} onDelete={deleteTask} onToggle={toggleTask} />
+      <TaskList tasks={tasks} onDelete={DeleteTaskApi} onToggle={ToggleTaskApi} />
     </div>
   );
 };

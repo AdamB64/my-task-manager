@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import TaskList from './TaskList.tsx';
 import TaskForm from './TaskForm.tsx';
 import Task from './Task.ts';
-import { fetchTasks, DeleteTask, UpdateTask } from './api.ts'; // Import fetchTasks
+import { fetchTasks, DeleteTask } from './api.ts'; // Import fetchTasks
 
 const App: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -15,17 +15,24 @@ const App: React.FC = () => {
   }, []);
 
   const DeleteTaskApi = (id: number) => {
-    console.log("delete task " + id);
-    DeleteTask(id).then(() => {
-      setTasks(tasks.filter(task => task.id !== id));
-    });
+    //console.log("delete task " + id);
+    DeleteTask(id)
+    setTasks(tasks.filter(task => task.id !== id));
+
   };
 
-  const ToggleTaskApi = (id: number) => {
+  const ToggleTaskApi = async (id: number) => {
     const taskToToggle = tasks.find(task => task.id === id);
     if (taskToToggle) {
       const updatedTask = { ...taskToToggle, completed: !taskToToggle.completed };
-      UpdateTask(id, updatedTask.completed)
+      const response = await fetch(`http://localhost:3001/UpdateTask`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id, completed: updatedTask.completed })
+      });
+      console.log("result " + response);
       setTasks(tasks.map(task => task.id === id ? updatedTask : task));
     }
   };

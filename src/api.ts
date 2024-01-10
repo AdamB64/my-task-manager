@@ -5,9 +5,14 @@ export const fetchTasks = () => {
 };
 
 export const DeleteTask = (id: number) => {
-    return fetch(`http://localhost:3001/DeleteTasks`, {
-        method: 'DELETE',
+    return fetch(`http://localhost:3001/DeleteTask`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id })
     });
+    console.log("called");
 };
 
 

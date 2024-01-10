@@ -47,18 +47,29 @@ app.get('/Alltasks', async (req, res) => {
 
 app.put('/UpdateTask', async (req, res) => {
     const { id, completed } = req.body;
-    console.log(id + " " + completed);
-    const task = await Task.findById(id);
-    task.completed = completed;
-    task.save()
-        .then(task => {
-            res.json({ message: 'task updated' });
-        })
-        .catch(err => {
-            res.status(400).send({ message: 'update not possible' });
-        });
+    //console.log(id + " " + completed);
+
+    try {
+        const task = await Task.findOne({ id: id });
+        if (!task) {
+            return res.status(404).send({ message: 'Task not found' });
+        }
+
+        task.completed = completed;
+        await task.save();
+
+        res.status(200).json({ message: 'task updated' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: 'Server error' });
+    }
 });
 
+app.put('/DeleteTask', async (req, res) => {
+    //console.log(req.body)
+    const { id } = req.body;
+    const task = await Task.deleteOne({ id: id });
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

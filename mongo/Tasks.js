@@ -3,7 +3,8 @@ const mongoose = require('./mongo.js');
 const Taskschema = new mongoose.Schema({
     id: Number,
     title: String,
-    completed: Boolean
+    completed: Boolean,
+    Deadline: String
 });
 
 

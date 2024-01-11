@@ -19,11 +19,12 @@ app.use(bodyParser.json());
 // Define your routes and API endpoints here
 
 app.post('/tasks', (req, res) => {
-    const { id, title, completed } = req.body;
+    const { id, title, completed, Deadline } = req.body;
     const newtask = new Task({
         id,
         title,
-        completed
+        completed,
+        Deadline
     });
     newtask.save()
         .then(newtask => {

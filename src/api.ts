@@ -24,11 +24,4 @@ export const UpdateTask = async (id: number, completed: boolean) => {
         },
         body: JSON.stringify({ id, completed })
     });
-    const data = await response.json();
-    console.log(data.message);
-    //if (data.message === 'task updated') {
-    //  return data;
-    //} else {
-    //  throw new Error(data.message);
-    //}
 };

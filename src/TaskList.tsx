@@ -19,7 +19,10 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onDelete, onToggle }) => {
                         onChange={() => onToggle(task.id)}
                     />
                     <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
-                        {task.title}
+                        <span style={{ textDecoration: 'underline' }}>Title:</span> {task.title + " "}
+                    </span>
+                    <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
+                        <span style={{ textDecoration: 'underline' }}>Deadline:</span> {task.Deadline}
                     </span>
                     <button onClick={() => onDelete(task.id)}>Delete</button>
                 </li>
